@@ -355,7 +355,7 @@ export default function CharacterField({
       {/* GitHub link positioned at grid cell */}
       {githubPos && (
         <a
-          href="https://github.com/danielhowells/boubakikid"
+          href="https://github.com/howells/boubakikid"
           target="_blank"
           rel="noopener noreferrer"
           className="absolute pointer-events-auto hover:opacity-60 transition-opacity"
