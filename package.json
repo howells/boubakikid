@@ -32,6 +32,14 @@
   ],
   "author": "Daniel Howells",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/howells/boubakikid.git"
+  },
+  "homepage": "https://github.com/howells/boubakikid",
+  "bugs": {
+    "url": "https://github.com/howells/boubakikid/issues"
+  },
   "dependencies": {
     "nanoid": "^5.1.7"
   },
