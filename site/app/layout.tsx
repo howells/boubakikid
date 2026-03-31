@@ -10,6 +10,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "boubakikid",
   description: "Pleasant ID generator. No sharp edges.",
+  openGraph: {
+    title: "boubakikid",
+    description: "Pleasant ID generator. No sharp edges.",
+    images: [{ url: "/og", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "boubakikid",
+    description: "Pleasant ID generator. No sharp edges.",
+    images: ["/og"],
+  },
 };
 
 export default function RootLayout({
