@@ -1,0 +1,33 @@
+{
+  "name": "boubakikid",
+  "version": "1.0.0",
+  "description": "Pleasant, round ID generator based on bouba/kiki effect research",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["nanoid", "id", "bouba", "kiki", "generator", "friendly"],
+  "author": "Daniel Howells",
+  "license": "MIT",
+  "dependencies": {
+    "nanoid": "^5.1.7"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.1"
+  }
+}
