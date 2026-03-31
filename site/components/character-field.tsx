@@ -1,15 +1,18 @@
 "use client";
 
 import { useRef, useEffect, useCallback, useState } from "react";
-import { id as boubaId } from "@/lib/boubakikid";
+import { id as boubaId, createId } from "@/lib/boubakikid";
 
 export type PhysicsMode = "magnetic" | "scatter" | "gravity";
 
 // All the angular/spiky characters: the excluded set plus other sharp-looking glyphs
 const SPIKY_POOL = "KVWXZkvwxzAMNYTLFEHIJPR<>^*/\\|!#%&+741";
 
-const CHAR_SIZE = 28;
-const SPACING = 38;
+function getResponsiveConfig(width: number) {
+  if (width < 500) return { charSize: 18, spacing: 26, idLength: 7 };
+  if (width < 800) return { charSize: 22, spacing: 32, idLength: 9 };
+  return { charSize: 28, spacing: 38, idLength: 13 };
+}
 
 type Particle = {
   char: string;
@@ -25,14 +28,15 @@ type Particle = {
 function createGrid(
   width: number,
   height: number,
-  idChars: string
+  idChars: string,
+  spacing: number
 ): Particle[] {
   const particles: Particle[] = [];
-  const cols = Math.ceil(width / SPACING) + 2;
-  const rows = Math.ceil(height / SPACING) + 2;
-  const offsetX = (width - (cols - 1) * SPACING) / 2;
+  const cols = Math.ceil(width / spacing) + 2;
+  const rows = Math.ceil(height / spacing) + 2;
+  const offsetX = (width - (cols - 1) * spacing) / 2;
   // Shift grid up by half a row so the midpoint between ID row and label row is viewport center
-  const offsetY = (height - (rows - 1) * SPACING) / 2 - SPACING / 2;
+  const offsetY = (height - (rows - 1) * spacing) / 2 - spacing / 2;
 
   // Center row for ID, row below for "boubakikid" label
   const centerRow = Math.floor(rows / 2);
@@ -47,8 +51,8 @@ function createGrid(
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
-      const x = offsetX + col * SPACING;
-      const y = offsetY + row * SPACING;
+      const x = offsetX + col * spacing;
+      const y = offsetY + row * spacing;
 
       // Is this cell part of the center ID?
       const isIdCell =
@@ -206,13 +210,14 @@ export default function CharacterField({
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const [githubPos, setGithubPos] = useState<{ x: number; y: number } | null>(null);
   const frameRef = useRef(0);
-  const currentIdRef = useRef(boubaId());
-  const colsRef = useRef(0);
+  const configRef = useRef(getResponsiveConfig(typeof window !== "undefined" ? window.innerWidth : 1440));
+  const idGenRef = useRef(createId(configRef.current.idLength));
+  const currentIdRef = useRef(idGenRef.current());
 
   // Cycle IDs — rebuild only the ID particles in place
   useEffect(() => {
     const interval = setInterval(() => {
-      const newId = boubaId();
+      const newId = idGenRef.current();
       currentIdRef.current = newId;
 
       // Update just the ID particles' chars
@@ -239,19 +244,22 @@ export default function CharacterField({
       const ctx = canvas.getContext("2d")!;
       ctx.scale(dpr, dpr);
 
+      const config = getResponsiveConfig(window.innerWidth);
+      configRef.current = config;
+      idGenRef.current = createId(config.idLength);
+      currentIdRef.current = idGenRef.current();
+
       particlesRef.current = createGrid(
         window.innerWidth,
         window.innerHeight,
-        currentIdRef.current
+        currentIdRef.current,
+        config.spacing
       );
 
       const ghParticle = particlesRef.current.find((p) => p.kind === "github");
       if (ghParticle) {
         setGithubPos({ x: ghParticle.baseX, y: ghParticle.baseY });
       }
-
-      colsRef.current =
-        Math.ceil(window.innerWidth / SPACING) + 2;
     };
 
     resize();
@@ -296,7 +304,7 @@ export default function CharacterField({
 
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = `${CHAR_SIZE}px "Geist Mono", monospace`;
+    ctx.font = `${configRef.current.charSize}px "Geist Mono", monospace`;
 
     for (const p of particlesRef.current) {
       if (p.kind === "spiky") {
@@ -339,8 +347,8 @@ export default function CharacterField({
           }}
         >
           <svg
-            width={CHAR_SIZE * 0.7}
-            height={CHAR_SIZE * 0.7}
+            width={configRef.current.charSize * 0.7}
+            height={configRef.current.charSize * 0.7}
             viewBox="0 0 24 24"
             fill="#0a0a0a"
           >
