@@ -31,7 +31,8 @@ function createGrid(
   const cols = Math.ceil(width / SPACING) + 2;
   const rows = Math.ceil(height / SPACING) + 2;
   const offsetX = (width - (cols - 1) * SPACING) / 2;
-  const offsetY = (height - (rows - 1) * SPACING) / 2;
+  // Shift grid up by half a row so the midpoint between ID row and label row is viewport center
+  const offsetY = (height - (rows - 1) * SPACING) / 2 - SPACING / 2;
 
   // Center row for ID, row below for "boubakikid" label
   const centerRow = Math.floor(rows / 2);
