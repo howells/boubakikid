@@ -66,10 +66,11 @@ function createGrid(
         col >= labelStartCol &&
         col < labelStartCol + labelText.length;
 
-      // GitHub icon: one cell gap after the label (space between d and icon)
-      const isGithubCell =
-        row === labelRow &&
-        col === labelStartCol + labelText.length + 2;
+      // GitHub icon: beside label on desktop, below (aligned with b) on mobile
+      const isMobile = spacing < 38;
+      const isGithubCell = isMobile
+        ? row === labelRow + 1 && col === labelStartCol
+        : row === labelRow && col === labelStartCol + labelText.length + 2;
 
       if (isIdCell) {
         const idIndex = col - idStartCol;
@@ -267,19 +268,33 @@ export default function CharacterField({
     return () => window.removeEventListener("resize", resize);
   }, []);
 
-  // Mouse tracking
+  // Mouse + touch tracking
   useEffect(() => {
-    const onMove = (e: MouseEvent) => {
+    const onMouseMove = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
     };
-    const onLeave = () => {
+    const onMouseLeave = () => {
       mouseRef.current = { x: -1000, y: -1000 };
     };
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseleave", onLeave);
+    const onTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      mouseRef.current = { x: touch.clientX, y: touch.clientY };
+    };
+    const onTouchEnd = () => {
+      mouseRef.current = { x: -1000, y: -1000 };
+    };
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseleave", onMouseLeave);
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchstart", onTouchMove as EventListener, { passive: false });
+    window.addEventListener("touchend", onTouchEnd);
     return () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseleave", onLeave);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseleave", onMouseLeave);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchstart", onTouchMove as EventListener);
+      window.removeEventListener("touchend", onTouchEnd);
     };
   }, []);
 
@@ -380,10 +395,6 @@ export default function CharacterField({
         ))}
       </div>
 
-      {/* npm install */}
-      <div className="fixed bottom-6 right-4 text-[10px] text-[var(--muted)] pointer-events-auto">
-        <code>npm i boubakikid</code>
-      </div>
     </div>
   );
 }
