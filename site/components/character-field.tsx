@@ -11,7 +11,7 @@ const SPIKY_POOL = "KVWXZkvwxzAMNYTLFEHIJPR<>^*/\\|!#%&+741";
 function getResponsiveConfig(width: number) {
   if (width < 500) return { charSize: 18, spacing: 26, idLength: 7 };
   if (width < 800) return { charSize: 22, spacing: 32, idLength: 9 };
-  return { charSize: 28, spacing: 38, idLength: 13 };
+  return { charSize: 28, spacing: 38, idLength: 12 };
 }
 
 type Particle = {
@@ -47,7 +47,11 @@ function createGrid(
   const idStartCol = centerCol - Math.floor(idLen / 2);
 
   const labelText = "boubakikid";
-  const labelStartCol = idStartCol; // align with the ID start
+  // On desktop (12-char ID), align label start with ID start.
+  // On mobile (shorter ID), center label independently so it doesn't pull left.
+  const labelStartCol = idLen >= labelText.length
+    ? idStartCol
+    : centerCol - Math.floor(labelText.length / 2);
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
@@ -70,7 +74,7 @@ function createGrid(
       const isMobile = spacing < 38;
       const isGithubCell = isMobile
         ? row === labelRow + 1 && col === labelStartCol
-        : row === labelRow && col === labelStartCol + labelText.length + 2;
+        : row === labelRow && col === labelStartCol + labelText.length + 1;
 
       if (isIdCell) {
         const idIndex = col - idStartCol;
