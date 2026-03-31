@@ -9,8 +9,8 @@ export type PhysicsMode = "magnetic" | "scatter" | "gravity";
 const SPIKY_POOL = "KVWXZkvwxzAMNYTLFEHIJPR<>^*/\\|!#%&+741";
 
 function getResponsiveConfig(width: number) {
-  if (width < 500) return { charSize: 18, spacing: 26, idLength: 7 };
-  if (width < 800) return { charSize: 22, spacing: 32, idLength: 9 };
+  if (width < 500) return { charSize: 18, spacing: 26, idLength: 10 };
+  if (width < 800) return { charSize: 22, spacing: 32, idLength: 10 };
   return { charSize: 28, spacing: 38, idLength: 12 };
 }
 
