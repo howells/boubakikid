@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { id as boubaId, createId } from "@/lib/boubakikid";
 
 export type PhysicsMode = "magnetic" | "scatter" | "gravity";
@@ -29,7 +29,7 @@ function createGrid(
   width: number,
   height: number,
   idChars: string,
-  spacing: number
+  spacing: number,
 ): Particle[] {
   const particles: Particle[] = [];
   const cols = Math.ceil(width / spacing) + 2;
@@ -49,9 +49,10 @@ function createGrid(
   const labelText = "boubakikid";
   // On desktop (12-char ID), align label start with ID start.
   // On mobile (shorter ID), center label independently so it doesn't pull left.
-  const labelStartCol = idLen >= labelText.length
-    ? idStartCol
-    : centerCol - Math.floor(labelText.length / 2);
+  const labelStartCol =
+    idLen >= labelText.length
+      ? idStartCol
+      : centerCol - Math.floor(labelText.length / 2);
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
@@ -60,9 +61,7 @@ function createGrid(
 
       // Is this cell part of the center ID?
       const isIdCell =
-        row === centerRow &&
-        col >= idStartCol &&
-        col < idStartCol + idLen;
+        row === centerRow && col >= idStartCol && col < idStartCol + idLen;
 
       // Is this cell part of the label?
       const isLabelCell =
@@ -133,7 +132,7 @@ function applyPhysics(
   particles: Particle[],
   mouseX: number,
   mouseY: number,
-  mode: PhysicsMode
+  mode: PhysicsMode,
 ) {
   const radius = 160;
   const radiusSq = radius * radius;
@@ -213,9 +212,15 @@ export default function CharacterField({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const mouseRef = useRef({ x: -1000, y: -1000 });
-  const [githubPos, setGithubPos] = useState<{ x: number; y: number } | null>(null);
+  const [githubPos, setGithubPos] = useState<{ x: number; y: number } | null>(
+    null,
+  );
   const frameRef = useRef(0);
-  const configRef = useRef(getResponsiveConfig(typeof window !== "undefined" ? window.innerWidth : 1440));
+  const configRef = useRef(
+    getResponsiveConfig(
+      typeof window !== "undefined" ? window.innerWidth : 1440,
+    ),
+  );
   const idGenRef = useRef(createId(configRef.current.idLength));
   const currentIdRef = useRef(idGenRef.current());
 
@@ -258,7 +263,7 @@ export default function CharacterField({
         window.innerWidth,
         window.innerHeight,
         currentIdRef.current,
-        config.spacing
+        config.spacing,
       );
 
       const ghParticle = particlesRef.current.find((p) => p.kind === "github");
@@ -291,7 +296,9 @@ export default function CharacterField({
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseleave", onMouseLeave);
     window.addEventListener("touchmove", onTouchMove, { passive: false });
-    window.addEventListener("touchstart", onTouchMove as EventListener, { passive: false });
+    window.addEventListener("touchstart", onTouchMove as EventListener, {
+      passive: false,
+    });
     window.addEventListener("touchend", onTouchEnd);
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
@@ -318,7 +325,7 @@ export default function CharacterField({
       particlesRef.current,
       mouseRef.current.x,
       mouseRef.current.y,
-      mode
+      mode,
     );
 
     ctx.textAlign = "center";
@@ -390,15 +397,14 @@ export default function CharacterField({
               m.value === "magnetic"
                 ? "rounded-l-md border-r-0"
                 : m.value === "gravity"
-                ? "rounded-r-md border-l-0"
-                : ""
+                  ? "rounded-r-md border-l-0"
+                  : ""
             }`}
           >
             {m.label}
           </button>
         ))}
       </div>
-
     </div>
   );
 }

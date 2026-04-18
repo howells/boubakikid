@@ -20,7 +20,12 @@
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
+    "lint": "howells-lint",
+    "format": "howells-format",
     "prepublishOnly": "npm run build"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx,json,jsonc,css}": "howells-format"
   },
   "keywords": [
     "nanoid",
@@ -44,6 +49,8 @@
     "nanoid": "^5.1.7"
   },
   "devDependencies": {
+    "@howells/lint": "*",
+    "@howells/typescript-config": "*",
     "tsup": "^8.5.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.1"

@@ -1,11 +1,6 @@
 {
+  "extends": "@howells/typescript-config/bundler-no-dom-library",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "declaration": true,
-    "strict": true,
-    "esModuleInterop": true,
     "outDir": "dist",
     "rootDir": "src"
   },

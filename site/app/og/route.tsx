@@ -18,11 +18,11 @@ function seededRandom(seed: number) {
 export async function GET() {
   // Load Geist Mono font
   const fontData = await fetch(
-    "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&display=swap"
+    "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&display=swap",
   ).then((res) => res.text());
 
   const fontUrl = fontData.match(
-    /src:\s*url\(([^)]+)\)\s*format\('woff2'\)/
+    /src:\s*url\(([^)]+)\)\s*format\('woff2'\)/,
   )?.[1];
 
   const font = fontUrl
@@ -71,35 +71,33 @@ export async function GET() {
   }
 
   return new ImageResponse(
-    (
-      <div
-        style={{
-          width: WIDTH,
-          height: HEIGHT,
-          background: "#fafafa",
-          display: "flex",
-          position: "relative",
-          fontFamily: '"Geist Mono", monospace',
-        }}
-      >
-        {chars.map((c, i) => (
-          <div
-            key={i}
-            style={{
-              position: "absolute",
-              left: c.x,
-              top: c.y,
-              fontSize: CHAR_SIZE,
-              color: c.isLabel ? "#0a0a0a" : "#c8c8c8",
-              transform: "translate(-50%, -50%)",
-              fontFamily: '"Geist Mono", monospace',
-            }}
-          >
-            {c.char}
-          </div>
-        ))}
-      </div>
-    ),
+    <div
+      style={{
+        width: WIDTH,
+        height: HEIGHT,
+        background: "#fafafa",
+        display: "flex",
+        position: "relative",
+        fontFamily: '"Geist Mono", monospace',
+      }}
+    >
+      {chars.map((c, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            left: c.x,
+            top: c.y,
+            fontSize: CHAR_SIZE,
+            color: c.isLabel ? "#0a0a0a" : "#c8c8c8",
+            transform: "translate(-50%, -50%)",
+            fontFamily: '"Geist Mono", monospace',
+          }}
+        >
+          {c.char}
+        </div>
+      ))}
+    </div>,
     {
       width: WIDTH,
       height: HEIGHT,
@@ -115,6 +113,6 @@ export async function GET() {
             ],
           }
         : {}),
-    }
+    },
   );
 }

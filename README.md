@@ -1,5 +1,8 @@
 # boubakikid
 
+[![npm version](https://img.shields.io/npm/v/boubakikid)](https://www.npmjs.com/package/boubakikid)
+[![license](https://img.shields.io/npm/l/boubakikid)](https://github.com/howells/boubakikid/blob/main/LICENSE)
+
 Pleasant, round ID generator based on [bouba/kiki effect](https://en.wikipedia.org/wiki/Bouba/kiki_effect) research.
 
 Uses a custom 30-character alphabet that excludes angular/spiky letterforms (k, v, w, x, z), producing IDs that look and feel softer:
