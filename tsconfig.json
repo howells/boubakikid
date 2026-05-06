@@ -1,6 +1,7 @@
 {
   "extends": "@howells/typescript-config/bundler-no-dom-library",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "outDir": "dist",
     "rootDir": "src"
   },

@@ -81,9 +81,9 @@ export async function GET() {
         fontFamily: '"Geist Mono", monospace',
       }}
     >
-      {chars.map((c, i) => (
+      {chars.map((c) => (
         <div
-          key={i}
+          key={`${c.x}-${c.y}-${c.char}`}
           style={{
             position: "absolute",
             left: c.x,
