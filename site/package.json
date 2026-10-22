@@ -10,7 +10,7 @@
   "dependencies": {
     "boubakikid": "^1.0.1",
     "nanoid": "^5.1.11",
-    "next": "^16.2.6",
+    "next": "16.4.2",
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
   },
