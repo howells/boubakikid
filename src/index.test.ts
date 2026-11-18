@@ -31,6 +31,11 @@ describe("boubakikid", () => {
     expect(ALPHABET).not.toContain("z");
   });
 
+  it("has the 31 characters the docs state", () => {
+    expect(ALPHABET).toHaveLength(31);
+    expect(new Set(ALPHABET).size).toBe(31);
+  });
+
   it("createId generates custom length", () => {
     const gen = createId(21);
     expect(gen()).toHaveLength(21);
